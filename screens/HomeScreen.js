@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import { WebBrowser, Camera, Permissions } from 'expo';
 
@@ -13,6 +14,7 @@ import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
   state = {
+    imageUri: null,
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
   };
@@ -23,9 +25,13 @@ export default class HomeScreen extends React.Component {
   }
 
   snap = async () => {
-    if (this.camera) {
-      let photo = await this.camera.takePictureAsync();
-      return <Image source={photo.uri} />;
+    try {
+      if (this.camera) {
+        let photo = await this.camera.takePictureAsync();
+        this.setState({ imageUri: photo.uri });
+      }
+    } catch (err) {
+      console.error('An error occured while taking the picture:', err);
     }
   };
 
@@ -40,6 +46,15 @@ export default class HomeScreen extends React.Component {
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     } else {
+      let imageView = null;
+      if (this.state.imageUri) {
+        imageView = (
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={{ uri: this.state.imageUri }}
+          />
+        );
+      }
       return (
         <View style={{ flex: 1 }}>
           <Camera
@@ -63,6 +78,7 @@ export default class HomeScreen extends React.Component {
               this.snap();
             }}
           />
+          <View>{imageView}</View>
         </View>
       );
     }
