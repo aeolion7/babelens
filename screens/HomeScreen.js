@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Platform,
   StyleSheet,
   Text,
@@ -21,6 +22,13 @@ export default class HomeScreen extends React.Component {
     this.setState({ hasCameraPermission: status === 'granted' });
   }
 
+  snap = async () => {
+    if (this.camera) {
+      let photo = await this.camera.takePictureAsync();
+      return <Image source={photo.uri} />;
+    }
+  };
+
   static navigationOptions = {
     title: 'BabelLens',
   };
@@ -34,7 +42,13 @@ export default class HomeScreen extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.type}>
+          <Camera
+            style={{ flex: 1 }}
+            type={this.state.type}
+            ref={ref => {
+              this.camera = ref;
+            }}
+          >
             <View
               style={{
                 flex: 1,
@@ -43,6 +57,12 @@ export default class HomeScreen extends React.Component {
               }}
             />
           </Camera>
+          <Button
+            title="Capture Image"
+            onPress={() => {
+              this.snap();
+            }}
+          />
         </View>
       );
     }
