@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Alert
 } from 'react-native';
-import { WebBrowser, Camera, Permissions } from 'expo';
+import { WebBrowser, Camera, Permissions} from 'expo';
 import { connect } from 'react-redux';
 import { API_KEY } from '../secrets';
-import base64 from 'base-64';
 
 import { MonoText } from '../components/StyledText';
 
@@ -31,16 +31,16 @@ class HomeScreen extends React.Component {
   _snap = async () => {
     try {
       if (this.camera) {
-        let photo = await this.camera.takePictureAsync();
-        this.setState({ imageUri: photo.uri });
-        this._upload();
+        let photo = await this.camera.takePictureAsync({ base64: true });
+        this.setState({ imageUri: photo.base64 });
+        this._convertToText();
       }
     } catch (err) {
       console.error('An error occured while taking the picture:', err);
     }
   };
 
-  _upload = async () => {
+  _convertToText = async () => {
     try {
       let response = await fetch(
         'https://vision.googleapis.com/v1/images:annotate?key=' + API_KEY,
@@ -54,11 +54,11 @@ class HomeScreen extends React.Component {
             requests: [
               {
                 image: {
-                  content: base64.encode(this.state.imageUri),
+                  content: this.state.imageUri,
                 },
                 features: [
                   {
-                    type: 'TEXT_DETECTION',
+                    type: 'DOCUMENT_TEXT_DETECTION',
                     maxResults: 1,
                   },
                 ],
@@ -68,10 +68,24 @@ class HomeScreen extends React.Component {
         }
       );
       const responseJSON = await response.json();
-      // console.log(responseJSON.responses[0].textAnnotations[0].description);
-      console.log(responseJSON);
+
+      if (
+        !(
+          responseJSON &&
+          responseJSON.responses &&
+          responseJSON.responses[0] &&
+          responseJSON.responses[0].fullTextAnnotation
+        )
+      ) {
+        console.log(
+          'There was no readable text in your image. Please try again.'
+        );
+      } else {
+        const text = responseJSON.responses[0].fullTextAnnotation.text;
+        Alert.alert(text);
+      }
     } catch (err) {
-      console.error('An error occurred while uploading:', err);
+      console.error('An error occurred during text conversion:', err);
     }
   };
 
