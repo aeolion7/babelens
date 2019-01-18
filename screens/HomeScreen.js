@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   View,
   Image,
-  ScrollView
+  Alert
 } from 'react-native';
-import { WebBrowser, Camera, Permissions } from 'expo';
-import axios from 'axios';
+import { WebBrowser, Camera, Permissions} from 'expo';
+import { connect } from 'react-redux';
+import { API_KEY } from '../secrets';
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   state = {
     imageUri: null,
     hasCameraPermission: null,
@@ -27,14 +28,64 @@ export default class HomeScreen extends React.Component {
     this.setState({ hasCameraPermission: status === 'granted' });
   }
 
-  snap = async () => {
+  _snap = async () => {
     try {
       if (this.camera) {
-        let photo = await this.camera.takePictureAsync();
-        this.setState({ imageUri: photo.uri });
+        let photo = await this.camera.takePictureAsync({ base64: true });
+        this.setState({ imageUri: photo.base64 });
+        this._convertToText();
       }
     } catch (err) {
       console.error('An error occured while taking the picture:', err);
+    }
+  };
+
+  _convertToText = async () => {
+    try {
+      let response = await fetch(
+        'https://vision.googleapis.com/v1/images:annotate?key=' + API_KEY,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            requests: [
+              {
+                image: {
+                  content: this.state.imageUri,
+                },
+                features: [
+                  {
+                    type: 'DOCUMENT_TEXT_DETECTION',
+                    maxResults: 1,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
+      const responseJSON = await response.json();
+
+      if (
+        !(
+          responseJSON &&
+          responseJSON.responses &&
+          responseJSON.responses[0] &&
+          responseJSON.responses[0].fullTextAnnotation
+        )
+      ) {
+        console.log(
+          'There was no readable text in your image. Please try again.'
+        );
+      } else {
+        const text = responseJSON.responses[0].fullTextAnnotation.text;
+        Alert.alert(text);
+      }
+    } catch (err) {
+      console.error('An error occurred during text conversion:', err);
     }
   };
 
@@ -78,7 +129,7 @@ export default class HomeScreen extends React.Component {
           <Button
             title="Capture Image"
             onPress={() => {
-              this.snap();
+              this._snap();
             }}
           />
           <View style={{ height: 30 }}>{imageView}</View>
@@ -87,6 +138,8 @@ export default class HomeScreen extends React.Component {
     }
   }
 }
+
+export default connect(null)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
