@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ScrollView
 } from 'react-native';
 import { WebBrowser, Camera, Permissions } from 'expo';
+import axios from 'axios';
 
 import { MonoText } from '../components/StyledText';
 
@@ -16,6 +18,7 @@ export default class HomeScreen extends React.Component {
   state = {
     imageUri: null,
     hasCameraPermission: null,
+    isLoading: false,
     type: Camera.Constants.Type.back,
   };
 
@@ -78,7 +81,7 @@ export default class HomeScreen extends React.Component {
               this.snap();
             }}
           />
-          <View>{imageView}</View>
+          <View style={{ height: 30 }}>{imageView}</View>
         </View>
       );
     }
