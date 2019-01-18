@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { WebBrowser, Camera, Permissions} from 'expo';
 import { connect } from 'react-redux';
-import { API_KEY } from '../secrets';
+import { API_KEY } from '../assets/secrets';
 
 import { MonoText } from '../components/StyledText';
 
