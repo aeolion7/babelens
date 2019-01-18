@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   View,
   Image,
-  ScrollView
 } from 'react-native';
 import { WebBrowser, Camera, Permissions } from 'expo';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { API_KEY } from '../secrets';
+import base64 from 'base-64';
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   state = {
     imageUri: null,
     hasCameraPermission: null,
@@ -27,14 +28,50 @@ export default class HomeScreen extends React.Component {
     this.setState({ hasCameraPermission: status === 'granted' });
   }
 
-  snap = async () => {
+  _snap = async () => {
     try {
       if (this.camera) {
         let photo = await this.camera.takePictureAsync();
         this.setState({ imageUri: photo.uri });
+        this._upload();
       }
     } catch (err) {
       console.error('An error occured while taking the picture:', err);
+    }
+  };
+
+  _upload = async () => {
+    try {
+      let response = await fetch(
+        'https://vision.googleapis.com/v1/images:annotate?key=' + API_KEY,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            requests: [
+              {
+                image: {
+                  content: base64.encode(this.state.imageUri),
+                },
+                features: [
+                  {
+                    type: 'TEXT_DETECTION',
+                    maxResults: 1,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
+      const responseJSON = await response.json();
+      // console.log(responseJSON.responses[0].textAnnotations[0].description);
+      console.log(responseJSON);
+    } catch (err) {
+      console.error('An error occurred while uploading:', err);
     }
   };
 
@@ -78,7 +115,7 @@ export default class HomeScreen extends React.Component {
           <Button
             title="Capture Image"
             onPress={() => {
-              this.snap();
+              this._snap();
             }}
           />
           <View style={{ height: 30 }}>{imageView}</View>
@@ -87,6 +124,8 @@ export default class HomeScreen extends React.Component {
     }
   }
 }
+
+export default connect(null)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
