@@ -1,122 +1,91 @@
 import React from 'react';
 import {
-  Image,
+  Button,
   Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Image,
+  ScrollView
 } from 'react-native';
-import { WebBrowser } from 'expo';
+import { WebBrowser, Camera, Permissions } from 'expo';
+import axios from 'axios';
 
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
+  state = {
+    imageUri: null,
+    hasCameraPermission: null,
+    isLoading: false,
+    type: Camera.Constants.Type.back,
+  };
+
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
+  }
+
+  snap = async () => {
+    try {
+      if (this.camera) {
+        let photo = await this.camera.takePictureAsync();
+        this.setState({ imageUri: photo.uri });
+      }
+    } catch (err) {
+      console.error('An error occured while taking the picture:', err);
+    }
+  };
+
   static navigationOptions = {
-    header: null,
+    title: 'BabelLens',
   };
 
   render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
-            <View
-              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-            >
-              <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Welcome to BabelLens! This application will not look like this in
-              a couple of days.
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}
-            >
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is new tab bar text. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          >
-            <MonoText style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </MonoText>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use
-          useful development tools. {learnMoreButton}
-        </Text>
-      );
+    const { hasCameraPermission } = this.state;
+    if (hasCameraPermission === null) {
+      return <View />;
+    } else if (hasCameraPermission === false) {
+      return <Text>No access to camera</Text>;
     } else {
+      let imageView = null;
+      if (this.state.imageUri) {
+        imageView = (
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={{ uri: this.state.imageUri }}
+          />
+        );
+      }
       return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
+        <View style={{ flex: 1 }}>
+          <Camera
+            style={{ flex: 1 }}
+            type={this.state.type}
+            ref={ref => {
+              this.camera = ref;
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'transparent',
+                flexDirection: 'row',
+              }}
+            />
+          </Camera>
+          <Button
+            title="Capture Image"
+            onPress={() => {
+              this.snap();
+            }}
+          />
+          <View style={{ height: 30 }}>{imageView}</View>
+        </View>
       );
     }
   }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/development-mode'
-    );
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
