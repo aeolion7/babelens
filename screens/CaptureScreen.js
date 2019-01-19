@@ -35,7 +35,7 @@ class CaptureScreen extends React.Component {
         this.setState({ imageUri: photo.base64 });
         this._convertToText();
       } else {
-        console.log('There is no camera or the camera is inaccessible.');
+        Alert.alert('There is no camera or the camera is inaccessible.');
       }
     } catch (err) {
       console.error('An error occured while taking the picture:', err);
@@ -60,7 +60,9 @@ class CaptureScreen extends React.Component {
                 },
                 features: [
                   {
-                    type: 'DOCUMENT_TEXT_DETECTION',
+                    type: `${
+                      this.props.optimization ? 'DOCUMENT_' : ''
+                    }TEXT_DETECTION`,
                     maxResults: 1,
                   },
                 ],
@@ -78,7 +80,7 @@ class CaptureScreen extends React.Component {
           responseJSON.responses[0].fullTextAnnotation
         )
       ) {
-        console.log(
+        Alert.alert(
           'There was no readable text in your image. Please try again.'
         );
       } else {
@@ -91,9 +93,10 @@ class CaptureScreen extends React.Component {
   };
 
   _translate = async text => {
+    const { sourceLang, targetLang } = this.props;
     try {
       const translation = await fetch(
-        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${YANDEX_KEY}&text=${text}&lang=en-de`,
+        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${YANDEX_KEY}&text=${text}&lang=${sourceLang}-${targetLang}`,
         {
           method: 'POST',
           headers: {
@@ -106,7 +109,7 @@ class CaptureScreen extends React.Component {
       if (
         !(translationJSON && translationJSON.text && translationJSON.text[0])
       ) {
-        console.log('There was an error in translation.');
+        Alert.alert('An error occured during translation. Please try again.');
       } else {
         Alert.alert(translationJSON.text[0]);
       }
@@ -126,14 +129,6 @@ class CaptureScreen extends React.Component {
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     } else {
-      if (this.state.imageUri) {
-        imageView = (
-          <Image
-            style={{ width: 300, height: 300 }}
-            source={{ uri: this.state.imageUri }}
-          />
-        );
-      }
       return (
         <View style={{ flex: 1 }}>
           <Camera
@@ -163,7 +158,15 @@ class CaptureScreen extends React.Component {
   }
 }
 
-export default connect(null)(CaptureScreen);
+const mapStateToProps = state => {
+  return {
+    sourceLang: state.language.sourceLanguage,
+    targetLang: state.language.targetLanguage,
+    documentMode: state.settings.optimization,
+  };
+};
+
+export default connect(mapStateToProps)(CaptureScreen);
 
 const styles = StyleSheet.create({
   container: {
