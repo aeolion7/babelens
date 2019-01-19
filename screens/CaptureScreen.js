@@ -6,14 +6,12 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
   Alert,
 } from 'react-native';
-import { WebBrowser, Camera, Permissions } from 'expo';
+import { Camera, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { API_KEY, YANDEX_KEY } from '../assets/secrets';
-
-import { MonoText } from '../components/StyledText';
+import { detectedText } from '../store/text';
 
 class CaptureScreen extends React.Component {
   state = {
@@ -21,6 +19,8 @@ class CaptureScreen extends React.Component {
     hasCameraPermission: null,
     isLoading: false,
     type: Camera.Constants.Type.back,
+    recognizedText: '',
+    translatedText: '',
   };
 
   async componentDidMount() {
@@ -85,6 +85,7 @@ class CaptureScreen extends React.Component {
         );
       } else {
         const text = responseJSON.responses[0].fullTextAnnotation.text;
+        this.setState({ recognizedText: text });
         if (!this.props.previewOCR) {
           this._translate(text);
         } else {
@@ -131,7 +132,13 @@ class CaptureScreen extends React.Component {
       ) {
         Alert.alert('An error occured during translation. Please try again.');
       } else {
-        Alert.alert(translationJSON.text[0]);
+        const translatedResult = translationJSON.text[0];
+        Alert.alert(translatedResult);
+        this.setState({ translatedText: translatedResult });
+        this.props.storeTextObj(
+          this.state.recognizedText,
+          this.state.translatedText
+        );
       }
     } catch (err) {
       console.error('There was an error in translation: ', err);
@@ -187,7 +194,22 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(CaptureScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    storeTextObj: (recognizedText, translatedText) => {
+      const textObj = {
+        recognizedText,
+        translatedText,
+      };
+      dispatch(detectedText(textObj));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CaptureScreen);
 
 const styles = StyleSheet.create({
   container: {
