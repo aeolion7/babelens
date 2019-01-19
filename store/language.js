@@ -1,19 +1,19 @@
 const initialState = {
-  originLanguage: 'en',
-  targetLanguage: '',
+  sourceLanguage: 'en',
+  targetLanguage: 'de',
 };
 
-const SET_ORIGIN = 'SET_ORIGIN';
+const SET_SOURCE = 'SET_SOURCE';
 const SET_TARGET = 'SET_TARGET';
 
-const setOrigin = originLanguage => {
+export const setSource = sourceLanguage => {
   return {
-    type: SET_ORIGIN,
-    originLanguage,
+    type: SET_SOURCE,
+    sourceLanguage,
   };
 };
 
-const setTarget = targetLanguage => {
+export const setTarget = targetLanguage => {
   return {
     type: SET_TARGET,
     targetLanguage,
@@ -22,8 +22,8 @@ const setTarget = targetLanguage => {
 
 const languageReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_ORIGIN:
-      return { ...state, originLanguage: action.originLanguage };
+    case SET_SOURCE:
+      return { ...state, sourceLanguage: action.sourceLanguage };
     case SET_TARGET:
       return { ...state, targetLanguage: action.targetLanguage };
     default:
