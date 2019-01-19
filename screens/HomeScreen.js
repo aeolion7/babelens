@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Alert
+  Alert,
 } from 'react-native';
-import { WebBrowser, Camera, Permissions} from 'expo';
+import { WebBrowser, Camera, Permissions } from 'expo';
 import { connect } from 'react-redux';
-import { API_KEY } from '../assets/secrets';
+import { API_KEY, YANDEX_KEY } from '../assets/secrets';
 
 import { MonoText } from '../components/StyledText';
 
@@ -82,10 +82,35 @@ class HomeScreen extends React.Component {
         );
       } else {
         const text = responseJSON.responses[0].fullTextAnnotation.text;
-        Alert.alert(text);
+        this._translate(text);
       }
     } catch (err) {
       console.error('An error occurred during text conversion:', err);
+    }
+  };
+
+  _translate = async text => {
+    try {
+      const translation = await fetch(
+        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${YANDEX_KEY}&text=${text}&lang=en-de`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const translationJSON = await translation.json();
+      if (
+        !(translationJSON && translationJSON.text && translationJSON.text[0])
+      ) {
+        console.log('There was an error in translation.')
+      } else {
+        Alert.alert(translationJSON.text[0]);
+      }
+    } catch (err) {
+      console.error('There was an error in translation: ', err);
     }
   };
 
@@ -132,7 +157,6 @@ class HomeScreen extends React.Component {
               this._snap();
             }}
           />
-          <View style={{ height: 30 }}>{imageView}</View>
         </View>
       );
     }
