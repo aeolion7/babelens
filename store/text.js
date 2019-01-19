@@ -1,21 +1,28 @@
 const initialState = {
-  currentText: '',
-  recentText: [], // last 5 pieces of text
+  lastDetectedText: '',
+  recentTranslations: [],
 };
 
-const GOT_TEXT = 'GOT_TEXT';
+const DETECTED_TEXT = 'DETECTED_TEXT';
 
-const gotText = text => {
+export const detectedText = textObj => {
   return {
-    type: GOT_TEXT,
-    text,
+    type: DETECTED_TEXT,
+    textObj,
   };
 };
 
 const textReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GOT_TEXT:
-      return { ...state, currentText: action.text };
+    case DETECTED_TEXT:
+      if (state.recentTranslations.length >= 10) {
+        state.recentTranslations = state.recentTranslations.slice(1);
+      }
+      return {
+        ...state,
+        lastDetectedText: action.textObj.recognizedText,
+        recentTranslations: [...state.recentTranslations, action.textObj],
+      };
     default:
       return state;
   }

@@ -1,6 +1,5 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
-import { Text, Picker, View, Switch } from 'react-native';
+import { Text, View, Switch, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { setSource, setTarget } from '../store/language';
 import { toggleOptimization, toggleOCRPreview } from '../store/settings';
@@ -16,15 +15,19 @@ class SettingsScreen extends React.Component {
       <>
         <Text
           style={{
-            fontSize: 18,
             textAlign: 'center',
-            marginTop: 25,
-            marginBottom: 0,
+            fontSize: 18,
+            paddingTop: 5,
+            paddingBottom: 5,
           }}
         >
-          Please specify your source (left) and destination (right) languages:
+          Translate text
         </Text>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View
+          style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
+        >
+          <Text style={styles.selectorLabels}>from:</Text>
+          <Text style={styles.selectorLabels}>to:</Text>
           <LanguageSelector
             initialValue={this.props.sourceLanguage}
             changeLanguage={language =>
@@ -46,19 +49,19 @@ class SettingsScreen extends React.Component {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              margin: 10
+              margin: 10,
             }}
           >
-            <Text style={{ fontSize: 24 }}>Handwriting Mode</Text>
+            <Text style={styles.settingHeader}>Document/Handwriting Mode</Text>
             <Switch
               value={this.props.documentOptimization}
               onValueChange={this.props.switchOptimizationMode}
             />
           </View>
           <Text style={{ padding: 10 }}>
-            Enable this option for greater accuracy in the recognition of
-            handwriting. This may also perform better if you are trying to
-            recognize text that is more densely spaced, such as in a document.
+            Enable this option for greater handwriting recognition accuracy.
+            This will also better recognize text in more densely spaced formats,
+            such as in a document.
           </Text>
         </View>
         <View style={{ paddingTop: 20 }}>
@@ -67,17 +70,19 @@ class SettingsScreen extends React.Component {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              margin: 10
+              margin: 10,
             }}
           >
-            <Text style={{ fontSize: 24 }}>Display OCR Preview</Text>
+            <Text style={styles.settingHeader}>Display OCR Preview</Text>
             <Switch
               value={this.props.previewOCR}
               onValueChange={this.props.switchOCRPreview}
             />
           </View>
           <Text style={{ padding: 10 }}>
-            Enable this option if you would like to display the recognized text before it is translated.
+            This option provides you with a preview of the text that was
+            recognized in your image. Disable it if you prefer to be given the
+            translation directly.
           </Text>
         </View>
       </>
@@ -115,3 +120,13 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(SettingsScreen);
+
+const styles = StyleSheet.create({
+  selectorLabels: {
+    width: '50%',
+    textAlign: 'center',
+    fontSize: 16,
+    paddingTop: 5,
+  },
+  settingHeader: { fontSize: 24 },
+});
