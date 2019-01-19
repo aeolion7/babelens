@@ -61,7 +61,7 @@ class CaptureScreen extends React.Component {
                 features: [
                   {
                     type: `${
-                      this.props.optimization ? 'DOCUMENT_' : ''
+                      this.props.documentMode ? 'DOCUMENT_' : ''
                     }TEXT_DETECTION`,
                     maxResults: 1,
                   },
@@ -85,7 +85,27 @@ class CaptureScreen extends React.Component {
         );
       } else {
         const text = responseJSON.responses[0].fullTextAnnotation.text;
-        this._translate(text);
+        if (!this.props.previewOCR) {
+          this._translate(text);
+        } else {
+          Alert.alert(
+            'OCR Preview',
+            text + '\nIs the above text correct?',
+            [
+              {
+                text: 'No',
+                onPress: () => console.log('Operation cancelled.'),
+                style: 'destructive',
+              },
+              {
+                text: 'Yes',
+                onPress: () => this._translate(text),
+                style: 'default',
+              },
+            ],
+            { cancelable: false }
+          );
+        }
       }
     } catch (err) {
       console.error('An error occurred during text conversion:', err);
@@ -163,6 +183,7 @@ const mapStateToProps = state => {
     sourceLang: state.language.sourceLanguage,
     targetLang: state.language.targetLanguage,
     documentMode: state.settings.optimization,
+    previewOCR: state.settings.previewOCR,
   };
 };
 

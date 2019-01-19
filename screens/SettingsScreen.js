@@ -3,7 +3,7 @@ import { ExpoConfigView } from '@expo/samples';
 import { Text, Picker, View, Switch } from 'react-native';
 import { connect } from 'react-redux';
 import { setSource, setTarget } from '../store/language';
-import { toggleOptimization } from '../store/settings';
+import { toggleOptimization, toggleOCRPreview } from '../store/settings';
 import LanguageSelector from '../components/LanguageSelector';
 
 class SettingsScreen extends React.Component {
@@ -45,7 +45,8 @@ class SettingsScreen extends React.Component {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-around',
+              justifyContent: 'space-between',
+              margin: 10
             }}
           >
             <Text style={{ fontSize: 24 }}>Handwriting Mode</Text>
@@ -60,7 +61,25 @@ class SettingsScreen extends React.Component {
             recognize text that is more densely spaced, such as in a document.
           </Text>
         </View>
-        <ExpoConfigView />
+        <View style={{ paddingTop: 20 }}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              margin: 10
+            }}
+          >
+            <Text style={{ fontSize: 24 }}>Display OCR Preview</Text>
+            <Switch
+              value={this.props.previewOCR}
+              onValueChange={this.props.switchOCRPreview}
+            />
+          </View>
+          <Text style={{ padding: 10 }}>
+            Enable this option if you would like to display the recognized text before it is translated.
+          </Text>
+        </View>
       </>
     );
   }
@@ -69,6 +88,7 @@ class SettingsScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     documentOptimization: state.settings.optimization,
+    previewOCR: state.settings.previewOCR,
     sourceLanguage: state.language.sourceLanguage,
     targetLanguage: state.language.targetLanguage,
   };
@@ -84,6 +104,9 @@ const mapDispatchToProps = dispatch => {
     },
     switchOptimizationMode: () => {
       dispatch(toggleOptimization());
+    },
+    switchOCRPreview: () => {
+      dispatch(toggleOCRPreview());
     },
   };
 };
