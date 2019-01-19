@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import { connect } from 'react-redux';
@@ -32,7 +33,7 @@ class CaptureScreen extends React.Component {
     try {
       if (this.camera) {
         let photo = await this.camera.takePictureAsync({ base64: true });
-        this.setState({ imageUri: photo.base64 });
+        this.setState({ imageUri: photo.base64, isLoading: true });
         this._convertToText();
       } else {
         Alert.alert('There is no camera or the camera is inaccessible.');
@@ -83,6 +84,7 @@ class CaptureScreen extends React.Component {
         Alert.alert(
           'There was no readable text in your image. Please try again.'
         );
+        this.setState({ isLoading: false });
       } else {
         const text = responseJSON.responses[0].fullTextAnnotation.text;
         this.setState({ recognizedText: text });
@@ -95,7 +97,7 @@ class CaptureScreen extends React.Component {
             [
               {
                 text: 'No',
-                onPress: () => console.log('Operation cancelled.'),
+                onPress: () => this.setState({ isLoading: false }),
                 style: 'destructive',
               },
               {
@@ -131,10 +133,11 @@ class CaptureScreen extends React.Component {
         !(translationJSON && translationJSON.text && translationJSON.text[0])
       ) {
         Alert.alert('An error occured during translation. Please try again.');
+        this.setState({ isLoading: false });
       } else {
         const translatedResult = translationJSON.text[0];
         Alert.alert(translatedResult);
-        this.setState({ translatedText: translatedResult });
+        this.setState({ translatedText: translatedResult, isLoading: false });
         this.props.storeTextObj(
           this.state.recognizedText,
           this.state.translatedText
@@ -172,6 +175,13 @@ class CaptureScreen extends React.Component {
                 flexDirection: 'row',
               }}
             />
+            {this.state.isLoading && (
+              <ActivityIndicator
+                size="large"
+                color="#fefefe"
+                style={{ paddingBottom: 275 }}
+              />
+            )}
           </Camera>
           <Button
             title="Capture Image"
