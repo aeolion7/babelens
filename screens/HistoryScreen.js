@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    padding: 5,
+    padding: 10,
   },
 });

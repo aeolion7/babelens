@@ -16,9 +16,10 @@ class SettingsScreen extends React.Component {
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 18,
-            paddingTop: 5,
+            fontSize: 32,
+            paddingTop: 25,
             paddingBottom: 5,
+            fontWeight: '200',
           }}
         >
           Translate text
@@ -43,7 +44,7 @@ class SettingsScreen extends React.Component {
             style={{ width: '50%' }}
           />
         </View>
-        <View style={{ paddingTop: 20 }}>
+        <View style={{ paddingTop: 10 }}>
           <View
             style={{
               display: 'flex',
@@ -64,7 +65,7 @@ class SettingsScreen extends React.Component {
             such as in a document.
           </Text>
         </View>
-        <View style={{ paddingTop: 20 }}>
+        <View style={{ paddingTop: 10 }}>
           <View
             style={{
               display: 'flex',
@@ -125,8 +126,9 @@ const styles = StyleSheet.create({
   selectorLabels: {
     width: '50%',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 20,
     paddingTop: 5,
+    fontWeight: '200',
   },
-  settingHeader: { fontSize: 24 },
+  settingHeader: { fontSize: 26, fontWeight: '200' },
 });
