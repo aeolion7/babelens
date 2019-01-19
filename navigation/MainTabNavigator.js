@@ -6,23 +6,23 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
+import CaptureScreen from '../screens/CaptureScreen';
 // import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const CaptureStack = createStackNavigator({
+  Home: CaptureScreen,
 });
 
-HomeStack.navigationOptions = {
+CaptureStack.navigationOptions = {
   tabBarLabel: 'Capture',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? 'ios-camera'
+          : 'md-camera'
       }
     />
   ),
@@ -57,7 +57,7 @@ SettingsStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
+  CaptureStack,
   // LinksStack,
   SettingsStack,
 });

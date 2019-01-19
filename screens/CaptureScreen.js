@@ -15,7 +15,7 @@ import { API_KEY, YANDEX_KEY } from '../assets/secrets';
 
 import { MonoText } from '../components/StyledText';
 
-class HomeScreen extends React.Component {
+class CaptureScreen extends React.Component {
   state = {
     imageUri: null,
     hasCameraPermission: null,
@@ -34,6 +34,8 @@ class HomeScreen extends React.Component {
         let photo = await this.camera.takePictureAsync({ base64: true });
         this.setState({ imageUri: photo.base64 });
         this._convertToText();
+      } else {
+        console.log('There is no camera or the camera is inaccessible.');
       }
     } catch (err) {
       console.error('An error occured while taking the picture:', err);
@@ -68,7 +70,6 @@ class HomeScreen extends React.Component {
         }
       );
       const responseJSON = await response.json();
-
       if (
         !(
           responseJSON &&
@@ -105,7 +106,7 @@ class HomeScreen extends React.Component {
       if (
         !(translationJSON && translationJSON.text && translationJSON.text[0])
       ) {
-        console.log('There was an error in translation.')
+        console.log('There was an error in translation.');
       } else {
         Alert.alert(translationJSON.text[0]);
       }
@@ -125,7 +126,6 @@ class HomeScreen extends React.Component {
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     } else {
-      let imageView = null;
       if (this.state.imageUri) {
         imageView = (
           <Image
@@ -163,7 +163,7 @@ class HomeScreen extends React.Component {
   }
 }
 
-export default connect(null)(HomeScreen);
+export default connect(null)(CaptureScreen);
 
 const styles = StyleSheet.create({
   container: {
