@@ -1,5 +1,12 @@
 import React from 'react';
-import { Text, View, Switch, StyleSheet, Button } from 'react-native';
+import {
+  Text,
+  View,
+  Switch,
+  StyleSheet,
+  Button,
+  ScrollView,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { setSource, setTarget, swapLanguages } from '../store/language';
 import { toggleOptimization, toggleOCRPreview } from '../store/settings';
@@ -12,7 +19,7 @@ class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <>
+      <ScrollView>
         <Text
           style={{
             textAlign: 'center',
@@ -24,9 +31,7 @@ class SettingsScreen extends React.Component {
         >
           Translate text
         </Text>
-        <View
-          style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
-        >
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           <Text style={styles.selectorLabels}>from:</Text>
           <Text style={styles.selectorLabels}>to:</Text>
           <LanguageSelector
@@ -52,14 +57,7 @@ class SettingsScreen extends React.Component {
           }}
         />
         <View style={{ paddingTop: 10 }}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              margin: 10,
-            }}
-          >
+          <View style={styles.settingRow}>
             <Text style={styles.settingHeader}>Document/Handwriting Mode</Text>
             <Switch
               value={this.props.documentOptimization}
@@ -73,14 +71,7 @@ class SettingsScreen extends React.Component {
           </Text>
         </View>
         <View style={{ paddingTop: 10 }}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              margin: 10,
-            }}
-          >
+          <View style={styles.settingRow}>
             <Text style={styles.settingHeader}>Display OCR Preview</Text>
             <Switch
               value={this.props.previewOCR}
@@ -93,7 +84,7 @@ class SettingsScreen extends React.Component {
             translation directly.
           </Text>
         </View>
-      </>
+      </ScrollView>
     );
   }
 }
@@ -141,4 +132,10 @@ const styles = StyleSheet.create({
     fontWeight: '200',
   },
   settingHeader: { fontSize: 26, fontWeight: '200' },
+  settingRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 10,
+  },
 });

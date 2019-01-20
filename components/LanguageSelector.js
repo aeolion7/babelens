@@ -3,7 +3,6 @@ import { Picker } from 'react-native';
 
 const LanguageSelector = props => {
   const { initialValue, changeLanguage } = props;
-
   return (
     <Picker
       selectedValue={initialValue}
@@ -14,6 +13,7 @@ const LanguageSelector = props => {
       <Picker.Item label="Albanian" value="sq" />
       <Picker.Item label="Arabic" value="ar" />
       <Picker.Item label="Armenian" value="hy" />
+      <Picker.Item label="Belarusian" value="be" />
       <Picker.Item label="Bengali" value="bn" />
       <Picker.Item label="Bulgarian" value="bg" />
       <Picker.Item label="Burmese" value="my" />
@@ -58,6 +58,7 @@ const LanguageSelector = props => {
       <Picker.Item label="Urdu" value="ur" />
       <Picker.Item label="Vietnamese" value="vi" />
       <Picker.Item label="Welsh" value="cy" />
+      <Picker.Item label="Xhosa" value="xh" />
       <Picker.Item label="Yiddish" value="yi" />
     </Picker>
   );
