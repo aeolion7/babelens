@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, Switch, StyleSheet } from 'react-native';
+import { Text, View, Switch, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { setSource, setTarget } from '../store/language';
+import { setSource, setTarget, swapLanguages } from '../store/language';
 import { toggleOptimization, toggleOCRPreview } from '../store/settings';
 import LanguageSelector from '../components/LanguageSelector';
 
@@ -44,6 +44,13 @@ class SettingsScreen extends React.Component {
             style={{ width: '50%' }}
           />
         </View>
+        <Button
+          style={{ textAlign: 'center', margin: 0 }}
+          title="Swap"
+          onPress={() => {
+            this.props.swap();
+          }}
+        />
         <View style={{ paddingTop: 10 }}>
           <View
             style={{
@@ -113,6 +120,9 @@ const mapDispatchToProps = dispatch => {
     },
     switchOCRPreview: () => {
       dispatch(toggleOCRPreview());
+    },
+    swap: () => {
+      dispatch(swapLanguages());
     },
   };
 };
