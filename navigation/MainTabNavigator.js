@@ -7,6 +7,7 @@ import {
 
 import TabBarIcon from '../components/TabBarIcon';
 import CaptureScreen from '../screens/CaptureScreen';
+import TranslateScreen from '../screens/TranslateScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -19,11 +20,21 @@ CaptureStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? 'ios-camera'
-          : 'md-camera'
-      }
+      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+    />
+  ),
+};
+
+const TranslateStack = createStackNavigator({
+  Translate: TranslateScreen,
+});
+
+TranslateStack.navigationOptions = {
+  tabBarLabel: 'Translate',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-swap' : 'md-swap'}
     />
   ),
 };
@@ -58,6 +69,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   CaptureStack,
+  TranslateStack,
   HistoryStack,
   SettingsStack,
 });
