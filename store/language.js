@@ -5,6 +5,7 @@ const initialState = {
 
 const SET_SOURCE = 'SET_SOURCE';
 const SET_TARGET = 'SET_TARGET';
+const SWAP_LANGUAGES = 'SWAP_LANGUAGES';
 
 export const setSource = sourceLanguage => {
   return {
@@ -20,12 +21,25 @@ export const setTarget = targetLanguage => {
   };
 };
 
+export const swapLanguages = () => {
+  return {
+    type: SWAP_LANGUAGES,
+  };
+};
+
 const languageReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_SOURCE:
       return { ...state, sourceLanguage: action.sourceLanguage };
     case SET_TARGET:
       return { ...state, targetLanguage: action.targetLanguage };
+    case SWAP_LANGUAGES:
+      const temporarySource = state.sourceLanguage;
+      return {
+        ...state,
+        sourceLanguage: state.targetLanguage,
+        targetLanguage: temporarySource,
+      };
     default:
       return state;
   }
