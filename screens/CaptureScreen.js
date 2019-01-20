@@ -32,7 +32,9 @@ class CaptureScreen extends React.Component {
   _snap = async () => {
     try {
       if (this.camera) {
-        let photo = await this.camera.takePictureAsync({ base64: true });
+        let photo = await this.camera.takePictureAsync({
+          base64: true,
+        });
         this.setState({ imageUri: photo.base64, isLoading: true });
         this._convertToText();
       } else {
@@ -188,7 +190,7 @@ class CaptureScreen extends React.Component {
               <ActivityIndicator
                 size="large"
                 color="#fefefe"
-                style={{ paddingBottom: 275 }}
+                style={{ bottom: 300 }}
               />
             )}
           </Camera>

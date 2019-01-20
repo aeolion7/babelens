@@ -30,7 +30,7 @@ class TranslateScreen extends React.Component {
     headerTitleStyle: {
       fontSize: 18,
     },
-};
+  };
 
   state = {
     text: '',
