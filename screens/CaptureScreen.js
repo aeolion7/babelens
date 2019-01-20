@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Platform,
   StyleSheet,
   Text,
@@ -13,6 +12,7 @@ import { Camera, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { API_KEY, YANDEX_KEY } from '../assets/secrets';
 import { detectedText } from '../store/text';
+import { Ionicons } from '@expo/vector-icons';
 
 class CaptureScreen extends React.Component {
   state = {
@@ -150,6 +150,15 @@ class CaptureScreen extends React.Component {
 
   static navigationOptions = {
     title: 'BabelLens',
+    headerTintColor: '#ffffff',
+    headerStyle: {
+      backgroundColor: '#2F95D6',
+      borderBottomColor: '#222',
+      borderBottomWidth: 1,
+    },
+    headerTitleStyle: {
+      fontSize: 18,
+    },
   };
 
   render() {
@@ -183,12 +192,29 @@ class CaptureScreen extends React.Component {
               />
             )}
           </Camera>
-          <Button
+          <TouchableOpacity
             title="Capture Image"
             onPress={() => {
               this._snap();
             }}
-          />
+            style={{
+              position: 'absolute',
+              bottom: 30,
+              right: 30,
+              width: 90,
+              height: 90,
+              borderRadius: 40,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#aeaeff70',
+            }}
+          >
+            <Ionicons
+              name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+              size={60}
+              color="#cececea0"
+            />
+          </TouchableOpacity>
         </View>
       );
     }

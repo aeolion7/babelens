@@ -1,12 +1,14 @@
 import React from 'react';
 import {
+  Platform,
   Text,
   View,
   Switch,
   StyleSheet,
-  Button,
+  TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { setSource, setTarget, swapLanguages } from '../store/language';
 import { toggleOptimization, toggleOCRPreview } from '../store/settings';
@@ -15,7 +17,16 @@ import LanguageSelector from '../components/LanguageSelector';
 class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Settings',
-  };
+    headerTintColor: '#ffffff',
+    headerStyle: {
+      backgroundColor: '#2F95D6',
+      borderBottomColor: '#222',
+      borderBottomWidth: 1,
+    },
+    headerTitleStyle: {
+      fontSize: 18,
+    },
+};
 
   render() {
     return (
@@ -49,13 +60,19 @@ class SettingsScreen extends React.Component {
             style={{ width: '50%' }}
           />
         </View>
-        <Button
-          style={{ textAlign: 'center', margin: 0 }}
+        <TouchableOpacity
+          style={{ position: 'absolute', top: 175, right: 185 }}
           title="Swap"
           onPress={() => {
             this.props.swap();
           }}
-        />
+        >
+          <Ionicons
+            name={Platform.OS === 'ios' ? 'ios-swap' : 'md-swap'}
+            size={50}
+            color="#2e2e2e"
+          />
+        </TouchableOpacity>
         <View style={{ paddingTop: 10 }}>
           <View style={styles.settingRow}>
             <Text style={styles.settingHeader}>Document/Handwriting Mode</Text>

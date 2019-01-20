@@ -21,7 +21,16 @@ const DismissKeyboard = ({ children }) => (
 class TranslateScreen extends React.Component {
   static navigationOptions = {
     title: 'Text Translation',
-  };
+    headerTintColor: '#ffffff',
+    headerStyle: {
+      backgroundColor: '#2F95D6',
+      borderBottomColor: '#222',
+      borderBottomWidth: 1,
+    },
+    headerTitleStyle: {
+      fontSize: 18,
+    },
+};
 
   state = {
     text: '',
