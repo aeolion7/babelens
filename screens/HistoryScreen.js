@@ -25,7 +25,7 @@ class HistoryScreen extends React.Component {
               return (
                 <View key={keyId++}>
                   <View style={styles.listItem}>
-                    <Text style={styles.column}> {textObj.recognizedText}</Text>
+                    <Text style={styles.column}>{textObj.recognizedText}</Text>
                     <Text style={styles.column}>{textObj.translatedText}</Text>
                   </View>
                   <View style={styles.border} />
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
   },
   listItem: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     flexGrow: 1,
     flexBasis: 50,
     textAlign: 'center',
@@ -70,7 +71,8 @@ const styles = StyleSheet.create({
   column: {
     width: '50%',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: '200',
   },
   row: {
     flexDirection: 'row',

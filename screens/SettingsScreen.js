@@ -17,7 +17,7 @@ class SettingsScreen extends React.Component {
           style={{
             textAlign: 'center',
             fontSize: 32,
-            paddingTop: 25,
+            paddingTop: 20,
             paddingBottom: 5,
             fontWeight: '200',
           }}
