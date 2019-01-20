@@ -4,7 +4,16 @@ import { connect } from 'react-redux';
 
 class HistoryScreen extends React.Component {
   static navigationOptions = {
-    title: 'Recently Translated Text',
+    title: 'Recent Translations',
+    headerTintColor: '#ffffff',
+    headerStyle: {
+      backgroundColor: '#2F95D6',
+      borderBottomColor: '#222',
+      borderBottomWidth: 1,
+    },
+    headerTitleStyle: {
+      fontSize: 18,
+    },
   };
 
   render() {
@@ -76,6 +85,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    padding: 10,
+    paddingTop: 20,
+    paddingBottom: 10,
   },
 });

@@ -16,11 +16,11 @@ const CaptureStack = createStackNavigator({
 });
 
 CaptureStack.navigationOptions = {
-  tabBarLabel: 'Capture',
+  tabBarLabel: 'BabelLens',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+      name={Platform.OS === 'ios' ? 'ios-glasses' : 'md-glasses'}
     />
   ),
 };
@@ -34,7 +34,7 @@ TranslateStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-swap' : 'md-swap'}
+      name={Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'}
     />
   ),
 };
@@ -48,7 +48,7 @@ HistoryStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
+      name={Platform.OS === 'ios' ? 'ios-list-box' : 'md-list-box'}
     />
   ),
 };
