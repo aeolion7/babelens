@@ -24,8 +24,22 @@ class HistoryScreen extends React.Component {
       <ScrollView style={{ backgroundColor: '#fefefe' }}>
         <View style={styles.container}>
           <View style={styles.row}>
-            <Text style={{ ...styles.column, fontWeight: '600' }}>Source:</Text>
-            <Text style={{ ...styles.column, fontWeight: '600' }}>
+            <Text
+              style={{
+                ...styles.column,
+                fontWeight: '600',
+                fontFamily: 'Cochin',
+              }}
+            >
+              Source:
+            </Text>
+            <Text
+              style={{
+                ...styles.column,
+                fontWeight: '600',
+                fontFamily: 'Cochin',
+              }}
+            >
               Translation:
             </Text>
           </View>
@@ -43,8 +57,8 @@ class HistoryScreen extends React.Component {
               );
             })
           ) : (
-            <Text style={styles.centered}>
-              The last 10 translated pieces of text will appear here.
+            <Text style={styles.empty}>
+              The 10 most recent translation requests will appear here.
             </Text>
           )}
         </View>
@@ -65,8 +79,13 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
   },
-  centered: {
+  empty: {
     textAlign: 'center',
+    padding: 15,
+    fontSize: 24,
+    fontFamily: 'Damascus',
+    fontWeight: '200',
+    color: '#aaa',
   },
   listItem: {
     flex: 1,
@@ -88,10 +107,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '200',
+    padding: 10,
   },
   row: {
     flexDirection: 'row',
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 });
