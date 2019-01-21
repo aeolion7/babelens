@@ -103,6 +103,7 @@ class TranslateScreen extends React.Component {
                 this.textInput.clear();
               }}
               style={{ flex: 1 }}
+              color="red"
             />
             <Button
               title="Translate"
@@ -110,6 +111,7 @@ class TranslateScreen extends React.Component {
                 this._translateText(this.state.text);
               }}
               style={{ flex: 1 }}
+              color="blue"
             />
           </View>
         </View>
