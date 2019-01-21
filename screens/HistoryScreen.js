@@ -13,6 +13,7 @@ class HistoryScreen extends React.Component {
     },
     headerTitleStyle: {
       fontSize: 18,
+      fontFamily: 'Avenir',
     },
   };
 
@@ -29,7 +30,7 @@ class HistoryScreen extends React.Component {
             </Text>
           </View>
           <View style={styles.border} />
-          {recents &&
+          {recents[0] ? (
             recents.map(textObj => {
               return (
                 <View key={keyId++}>
@@ -40,7 +41,12 @@ class HistoryScreen extends React.Component {
                   <View style={styles.border} />
                 </View>
               );
-            })}
+            })
+          ) : (
+            <Text style={styles.centered}>
+              The last 10 translated pieces of text will appear here.
+            </Text>
+          )}
         </View>
       </ScrollView>
     );
@@ -86,6 +92,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     paddingTop: 20,
-    paddingBottom: 10,
+    paddingBottom: 20,
   },
 });

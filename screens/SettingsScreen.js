@@ -25,6 +25,7 @@ class SettingsScreen extends React.Component {
     },
     headerTitleStyle: {
       fontSize: 18,
+      fontFamily: 'Avenir',
     },
 };
 
