@@ -34,11 +34,11 @@ const languageReducer = (state = initialState, action) => {
     case SET_TARGET:
       return { ...state, targetLanguage: action.targetLanguage };
     case SWAP_LANGUAGES:
-      const temporarySource = state.sourceLanguage;
+      const newTarget = state.sourceLanguage;
       return {
         ...state,
         sourceLanguage: state.targetLanguage,
-        targetLanguage: temporarySource,
+        targetLanguage: newTarget,
       };
     default:
       return state;

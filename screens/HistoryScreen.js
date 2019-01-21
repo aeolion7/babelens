@@ -7,7 +7,7 @@ class HistoryScreen extends React.Component {
     title: 'Recent Translations',
     headerTintColor: '#ffffff',
     headerStyle: {
-      backgroundColor: '#2F95D6',
+      backgroundColor: '#2F85D6',
       borderBottomColor: '#222',
       borderBottomWidth: 1,
     },
@@ -21,14 +21,14 @@ class HistoryScreen extends React.Component {
     let keyId = 0;
     const recents = this.props.recentTranslations;
     return (
-      <ScrollView style={{ backgroundColor: '#fefefe' }}>
-        <View style={styles.container}>
+      <ScrollView style={{ backgroundColor: '#eaeaea' }}>
+        <View>
           <View style={styles.row}>
             <Text
               style={{
                 ...styles.column,
-                fontWeight: '600',
-                fontFamily: 'Cochin',
+                fontWeight: '400',
+                fontFamily: 'Trebuchet MS',
               }}
             >
               Source:
@@ -36,8 +36,8 @@ class HistoryScreen extends React.Component {
             <Text
               style={{
                 ...styles.column,
-                fontWeight: '600',
-                fontFamily: 'Cochin',
+                fontWeight: '400',
+                fontFamily: 'Trebuchet MS',
               }}
             >
               Translation:
@@ -76,16 +76,16 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(HistoryScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-  },
   empty: {
     textAlign: 'center',
     padding: 15,
     fontSize: 24,
     fontFamily: 'Damascus',
     fontWeight: '200',
-    color: '#aaa',
+    color: '#222',
+    position: 'absolute',
+    top: 275,
+    left: 25,
   },
   listItem: {
     flex: 1,
@@ -113,5 +113,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingTop: 10,
     paddingBottom: 10,
+    backgroundColor: '#aaa',
   },
 });

@@ -19,7 +19,7 @@ class SettingsScreen extends React.Component {
     title: 'Settings',
     headerTintColor: '#ffffff',
     headerStyle: {
-      backgroundColor: '#2F95D6',
+      backgroundColor: '#2F85D6',
       borderBottomColor: '#222',
       borderBottomWidth: 1,
     },
@@ -31,7 +31,7 @@ class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: '#eaeaea' }}>
         <Text
           style={{
             textAlign: 'center',
@@ -80,7 +80,7 @@ class SettingsScreen extends React.Component {
             <Switch
               value={this.props.documentOptimization}
               onValueChange={this.props.switchOptimizationMode}
-              trackColor={{ false: 'grey', true: 'purple' }}
+              trackColor={{ false: 'grey', true: '#9400D3' }}
               ios_backgroundColor="#555"
               thumbColor="whitesmoke"
             />
@@ -97,7 +97,7 @@ class SettingsScreen extends React.Component {
             <Switch
               value={this.props.previewOCR}
               onValueChange={this.props.switchOCRPreview}
-              trackColor={{ false: 'grey', true: 'purple' }}
+              trackColor={{ false: 'grey', true: '#9400D3' }}
               ios_backgroundColor="#555"
               thumbColor="whitesmoke"
             />
