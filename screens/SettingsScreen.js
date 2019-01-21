@@ -19,18 +19,19 @@ class SettingsScreen extends React.Component {
     title: 'Settings',
     headerTintColor: '#ffffff',
     headerStyle: {
-      backgroundColor: '#2F95D6',
+      backgroundColor: '#2F85D6',
       borderBottomColor: '#222',
       borderBottomWidth: 1,
     },
     headerTitleStyle: {
       fontSize: 18,
+      fontFamily: 'Avenir',
     },
-};
+  };
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: '#eaeaea' }}>
         <Text
           style={{
             textAlign: 'center',
@@ -79,9 +80,12 @@ class SettingsScreen extends React.Component {
             <Switch
               value={this.props.documentOptimization}
               onValueChange={this.props.switchOptimizationMode}
+              trackColor={{ false: 'grey', true: '#9400D3' }}
+              ios_backgroundColor="#555"
+              thumbColor="whitesmoke"
             />
           </View>
-          <Text style={{ padding: 10 }}>
+          <Text style={styles.flavorText}>
             Enable this option for greater handwriting recognition accuracy.
             This will also better recognize text in more densely spaced formats,
             such as in a document.
@@ -93,9 +97,12 @@ class SettingsScreen extends React.Component {
             <Switch
               value={this.props.previewOCR}
               onValueChange={this.props.switchOCRPreview}
+              trackColor={{ false: 'grey', true: '#9400D3' }}
+              ios_backgroundColor="#555"
+              thumbColor="whitesmoke"
             />
           </View>
-          <Text style={{ padding: 10 }}>
+          <Text style={styles.flavorText}>
             This option provides you with a preview of the text that was
             recognized in your image. Disable it if you prefer to be given the
             translation directly.
@@ -148,11 +155,12 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     fontWeight: '200',
   },
-  settingHeader: { fontSize: 26, fontWeight: '200' },
+  settingHeader: { fontSize: 27, fontWeight: '200' },
   settingRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 10,
   },
+  flavorText: { padding: 10, fontFamily: 'Damascus', fontWeight: '300' },
 });

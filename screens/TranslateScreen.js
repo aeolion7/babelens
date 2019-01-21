@@ -23,12 +23,13 @@ class TranslateScreen extends React.Component {
     title: 'Text Translation',
     headerTintColor: '#ffffff',
     headerStyle: {
-      backgroundColor: '#2F95D6',
+      backgroundColor: '#2F85D6',
       borderBottomColor: '#222',
       borderBottomWidth: 1,
     },
     headerTitleStyle: {
       fontSize: 18,
+      fontFamily: 'Avenir',
     },
   };
 
@@ -70,15 +71,15 @@ class TranslateScreen extends React.Component {
   render() {
     return (
       <DismissKeyboard>
-        <View style={{ backgroundColor: '#fefefe', flex: 10 }}>
-          <View style={{ padding: 20, flex: 9 }}>
+        <View style={{ backgroundColor: '#eaeaea', flex: 10 }}>
+          <View style={{ padding: 40, flex: 9 }}>
             <TextInput
               multiline={true}
               style={{
                 flex: 7,
                 fontWeight: '300',
                 fontSize: 32,
-                backgroundColor: '#fefefe',
+                backgroundColor: '#eaeaea',
                 borderRadius: 20,
               }}
               placeholder="You may enter text here and translate it directly using the language options in the Settings tab."

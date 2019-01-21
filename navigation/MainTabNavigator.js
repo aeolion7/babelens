@@ -20,7 +20,7 @@ CaptureStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-glasses' : 'md-glasses'}
+      name={Platform.OS === 'ios' ? 'ios-aperture' : 'md-aperture'}
     />
   ),
 };

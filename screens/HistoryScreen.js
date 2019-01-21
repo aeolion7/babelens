@@ -7,12 +7,13 @@ class HistoryScreen extends React.Component {
     title: 'Recent Translations',
     headerTintColor: '#ffffff',
     headerStyle: {
-      backgroundColor: '#2F95D6',
+      backgroundColor: '#2F85D6',
       borderBottomColor: '#222',
       borderBottomWidth: 1,
     },
     headerTitleStyle: {
       fontSize: 18,
+      fontFamily: 'Avenir',
     },
   };
 
@@ -20,16 +21,30 @@ class HistoryScreen extends React.Component {
     let keyId = 0;
     const recents = this.props.recentTranslations;
     return (
-      <ScrollView style={{ backgroundColor: '#fefefe' }}>
-        <View style={styles.container}>
+      <ScrollView style={{ backgroundColor: '#eaeaea' }}>
+        <View>
           <View style={styles.row}>
-            <Text style={{ ...styles.column, fontWeight: '600' }}>Source:</Text>
-            <Text style={{ ...styles.column, fontWeight: '600' }}>
+            <Text
+              style={{
+                ...styles.column,
+                fontWeight: '400',
+                fontFamily: 'Trebuchet MS',
+              }}
+            >
+              Source:
+            </Text>
+            <Text
+              style={{
+                ...styles.column,
+                fontWeight: '400',
+                fontFamily: 'Trebuchet MS',
+              }}
+            >
               Translation:
             </Text>
           </View>
           <View style={styles.border} />
-          {recents &&
+          {recents[0] ? (
             recents.map(textObj => {
               return (
                 <View key={keyId++}>
@@ -40,7 +55,12 @@ class HistoryScreen extends React.Component {
                   <View style={styles.border} />
                 </View>
               );
-            })}
+            })
+          ) : (
+            <Text style={styles.empty}>
+              The 10 most recent translation requests will appear here.
+            </Text>
+          )}
         </View>
       </ScrollView>
     );
@@ -56,11 +76,16 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(HistoryScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-  },
-  centered: {
+  empty: {
     textAlign: 'center',
+    padding: 15,
+    fontSize: 24,
+    fontFamily: 'Damascus',
+    fontWeight: '200',
+    color: '#222',
+    position: 'absolute',
+    top: 275,
+    left: 25,
   },
   listItem: {
     flex: 1,
@@ -82,10 +107,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '200',
+    padding: 10,
   },
   row: {
     flexDirection: 'row',
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 10,
+    backgroundColor: '#aaa',
   },
 });

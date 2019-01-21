@@ -154,12 +154,13 @@ class CaptureScreen extends React.Component {
     title: 'BabelLens',
     headerTintColor: '#ffffff',
     headerStyle: {
-      backgroundColor: '#2F95D6',
+      backgroundColor: '#2F85D6',
       borderBottomColor: '#222',
       borderBottomWidth: 1,
     },
     headerTitleStyle: {
       fontSize: 18,
+      fontFamily: 'Avenir',
     },
   };
 
