@@ -4,10 +4,10 @@ import {
   View,
   Button,
   TextInput,
-  StyleSheet,
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 import { translatedTextDirectly } from '../store/text';
 import { YANDEX_KEY } from '../assets/secrets';
@@ -36,35 +36,44 @@ class TranslateScreen extends React.Component {
   state = {
     text: '',
     translatedText: '',
+    isLoading: false,
   };
 
   _translateText = async () => {
     const { sourceLang, targetLang } = this.props;
     const { text } = this.state;
-    try {
-      const translation = await fetch(
-        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${YANDEX_KEY}&text=${text}&lang=${sourceLang}-${targetLang}`,
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
+    if (!this.state.text) {
+      Alert.alert(
+        'No text to translate has been entered. Please enter the text that you would like to translate.'
       );
-      const translationJSON = await translation.json();
-      if (
-        !(translationJSON && translationJSON.text && translationJSON.text[0])
-      ) {
-        Alert.alert('An error occured during translation. Please try again.');
-      } else {
-        const translatedResult = translationJSON.text[0];
-        Alert.alert(translatedResult);
-        this.setState({ translatedText: translatedResult });
-        this.props.storeTextObj(this.state.text, this.state.translatedText);
+    } else {
+      try {
+        this.setState({ isLoading: true });
+        const translation = await fetch(
+          `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${YANDEX_KEY}&text=${text}&lang=${sourceLang}-${targetLang}`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const translationJSON = await translation.json();
+        if (
+          !(translationJSON && translationJSON.text && translationJSON.text[0])
+        ) {
+          Alert.alert('An error occured during translation. Please try again.');
+          this.setState({ isLoading: false });
+        } else {
+          const translatedResult = translationJSON.text[0];
+          Alert.alert(translatedResult);
+          this.setState({ translatedText: translatedResult, isLoading: false });
+          this.props.storeTextObj(this.state.text, this.state.translatedText);
+        }
+      } catch (err) {
+        console.error('There was an error in translation: ', err);
       }
-    } catch (err) {
-      console.error('There was an error in translation: ', err);
     }
   };
 
@@ -90,6 +99,13 @@ class TranslateScreen extends React.Component {
               }}
             />
           </View>
+          {this.state.isLoading && (
+            <ActivityIndicator
+              size="large"
+              color="#1f75dc"
+              style={{ left: 195, top: 285, position: 'absolute' }}
+            />
+          )}
           <View
             style={{
               flex: 1,

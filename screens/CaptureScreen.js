@@ -191,7 +191,7 @@ class CaptureScreen extends React.Component {
               <ActivityIndicator
                 size="large"
                 color="#fefefe"
-                style={{ bottom: 300 }}
+                style={{ left: 195, top: 285, position: 'absolute' }}
               />
             )}
           </Camera>
