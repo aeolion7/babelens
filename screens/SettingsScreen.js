@@ -87,8 +87,8 @@ class SettingsScreen extends React.Component {
           </View>
           <Text style={styles.flavorText}>
             Enable this option for greater handwriting recognition accuracy.
-            This will also better recognize text in more densely spaced formats,
-            such as in a document.
+            This option is optimized for reading text that is more densely
+            spaced, such as in a document.
           </Text>
         </View>
         <View style={{ paddingTop: 10 }}>
@@ -103,9 +103,9 @@ class SettingsScreen extends React.Component {
             />
           </View>
           <Text style={styles.flavorText}>
-            This option provides you with a preview of the text that was
-            recognized in your image. Disable it if you prefer to be given the
-            translation directly.
+            Enable this option if you want to be provided with a preview of the
+            text that was recognized in your image. Disable it if you prefer to
+            be given the translation directly.
           </Text>
         </View>
       </ScrollView>
@@ -162,5 +162,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     margin: 10,
   },
-  flavorText: { padding: 10, fontFamily: 'Damascus', fontWeight: '300' },
+  flavorText: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontFamily: 'Damascus',
+    fontWeight: '300',
+  },
 });
