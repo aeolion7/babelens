@@ -8,3 +8,5 @@ BabelLens is a mobile application that allows the user to use their camera to de
 2. Run `expo start`. A new window will open in your browser.
 3. The application can be viewed in an iOS simulator or Android emulator, but as it uses the camera, it is best viewed on a mobile device. To do this, simply scan the presented QR code in your device's camera.
 4. The app will load on your device!
+
+Please note that this application is currently optimized for iOS. Android optimization is currently a work in progress.
