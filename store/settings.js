@@ -1,6 +1,6 @@
 const initialState = {
   optimization: true,
-  previewOCR: true,
+  previewOCR: false,
 };
 
 const TOGGLE_OPTIMIZATION = 'TOGGLE_OPTIMIZATION';
